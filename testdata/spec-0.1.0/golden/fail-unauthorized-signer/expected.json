@@ -1,0 +1,7 @@
+{
+  "gate": "G4",
+  "allow": false,
+  "deny_must_include": [
+    "verdict for SC-01 produced under role implementer, which the catalogue does not authorize"
+  ]
+}

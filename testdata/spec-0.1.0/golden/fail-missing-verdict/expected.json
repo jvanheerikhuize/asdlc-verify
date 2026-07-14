@@ -1,0 +1,7 @@
+{
+  "gate": "G4",
+  "allow": false,
+  "deny_must_include": [
+    "required control SC-01 has no pass verdict on head commit"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "gate": "G4",
+  "allow": false,
+  "deny_must_include": [
+    "required control QC-01 has no pass verdict on head commit",
+    "required control QC-01 has a fail verdict on head commit; supersede with new work (waivers arrive in slice 2)"
+  ]
+}
