@@ -15,6 +15,18 @@ asdlc-verify doctor -manifest asdlc.yaml
 Exit codes: `0` gate passes · `1` gate denies (reasons on stdout as JSON) ·
 `2` operational error.
 
+Or as a GitHub Action (the reference-binding required check):
+
+```yaml
+- uses: jvanheerikhuize/asdlc-verify@main
+  with:
+    gate: G4
+    spec-dir: spec
+    change-dir: .asdlc/changes/CR-...
+    head: ${{ github.event.pull_request.head.sha }}
+    dev-unsigned: "true"   # v0.1 only mode; see honesty notes
+```
+
 ## v0.1 honesty notes
 
 - **`--dev-unsigned` is the only evidence mode**: statements are read as plain
