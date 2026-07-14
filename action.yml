@@ -1,0 +1,48 @@
+name: asdlc-gate
+description: >-
+  Evaluate an ASDLC gate over a Change Record's evidence bundle. The
+  reference-binding enforcement step: wire this as a required check.
+inputs:
+  gate:
+    description: Gate to evaluate (e.g. G4)
+    default: G4
+  spec-dir:
+    description: Path to the pinned asdlc spec content
+    required: true
+  change-dir:
+    description: Change Record directory (.asdlc/changes/<id>)
+    required: true
+  head:
+    description: Head commit sha the gate is evaluated against
+    required: true
+  manifest:
+    description: Path to the consuming repo's asdlc.yaml
+    default: asdlc.yaml
+  dev-unsigned:
+    description: >-
+      "true" enables trust-on-read evidence mode (signatures NOT verified;
+      non-enforcing). The only mode in v0.1.
+    default: "false"
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-go@v5
+      with:
+        go-version: "1.23"
+        cache: false
+    - name: Build verifier
+      shell: bash
+      run: |
+        cd "$GITHUB_ACTION_PATH"
+        go mod tidy
+        go build -o "$RUNNER_TEMP/asdlc-verify" ./cmd/asdlc-verify
+    - name: Evaluate gate
+      shell: bash
+      run: |
+        args=(gate -gate "${{ inputs.gate }}" -spec "${{ inputs.spec-dir }}" \
+              -change-dir "${{ inputs.change-dir }}" -head "${{ inputs.head }}" \
+              -manifest "${{ inputs.manifest }}")
+        if [ "${{ inputs.dev-unsigned }}" = "true" ]; then
+          args+=(-dev-unsigned)
+        fi
+        "$RUNNER_TEMP/asdlc-verify" "${args[@]}"
