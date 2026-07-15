@@ -13,14 +13,15 @@ import (
 )
 
 // Conformance: the verifier must reproduce, bundle for bundle, the outcomes
-// the spec's golden fixtures pin. Fixtures are a pinned copy of
-// asdlc-spec 0.1.0 (testdata/spec-0.1.0); replace with a tag fetch once spec
-// releases are tagged.
+// the spec's golden fixtures pin. Fixtures are fetched from the asdlc spec
+// repo at the tag named in spec.pin (see scripts/fetch-fixtures.sh) into
+// testdata/spec-pinned; run that script before this test if the directory
+// is missing.
 func TestG4GoldenConformance(t *testing.T) {
-	root := filepath.Join("..", "..", "testdata", "spec-0.1.0")
+	root := filepath.Join("..", "..", "testdata", "spec-pinned")
 	policySrc, err := os.ReadFile(filepath.Join(root, "gates", "g4-merge.rego"))
 	if err != nil {
-		t.Fatalf("read policy: %v", err)
+		t.Fatalf("read policy (run scripts/fetch-fixtures.sh first): %v", err)
 	}
 
 	bundles, err := filepath.Glob(filepath.Join(root, "golden", "*"))
