@@ -35,9 +35,11 @@ Or as a GitHub Action (the reference-binding required check):
   identity. Loudly warned, non-enforcing. DSSE + Sigstore verification is the
   next milestone; the policy input shape is already final, so the gate
   contract does not change when it lands.
-- **`testdata/spec-0.1.0/`** is a pinned copy of the spec's gate policy and
-  golden bundles (conformance fixtures). Replace with a tag fetch when spec
-  releases are tagged.
+- **Conformance fixtures are fetched, not hand-copied.** `spec.pin` names the
+  asdlc spec tag; `scripts/fetch-fixtures.sh` clones that tag and copies the
+  gate policy and golden bundles into `testdata/spec-pinned/` (gitignored,
+  regenerated in CI before `go test`). Bump the pin file to move to a newer
+  spec release.
 
 ## Design boundaries (from the spec repo's decisions)
 
