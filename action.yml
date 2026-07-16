@@ -30,6 +30,7 @@ runs:
       with:
         go-version-file: ${{ github.action_path }}/go.mod
         cache: true
+        cache-dependency-path: ${{ github.action_path }}/go.sum
     - name: Build verifier
       shell: bash
       run: |
